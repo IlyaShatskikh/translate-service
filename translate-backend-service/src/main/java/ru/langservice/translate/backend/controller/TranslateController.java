@@ -8,12 +8,12 @@ import ru.langservice.translate.backend.service.TranslationService;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @AllArgsConstructor
 public class TranslateController {
 
     private final TranslationService translationService;
 
-    @CrossOrigin
     @GetMapping("/translations")
     public List<Translation> translations() {
         return translationService.getTranslations();
