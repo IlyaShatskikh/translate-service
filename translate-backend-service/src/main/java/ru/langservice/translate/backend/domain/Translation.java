@@ -7,6 +7,7 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -29,6 +30,8 @@ public class Translation {
     @Length(max = 2048, message = "Message too long")
     private String resultText;
 
+    private LocalDateTime dateTime;
+
 //    @ManyToOne(fetch = FetchType.EAGER)
 //    @JoinColumn(name = "user_id")
 //    private User user;
@@ -40,10 +43,10 @@ public class Translation {
 //        this.user = user;
 //    }
 
-
-    public Translation(String text, String lang, String resultText) {
+    public Translation(String text, String lang, String result, LocalDateTime dateTime) {
         this.origText = text;
         this.lang = lang;
-        this.resultText = resultText;
+        this.resultText = result;
+        this.dateTime = dateTime;
     }
 }
