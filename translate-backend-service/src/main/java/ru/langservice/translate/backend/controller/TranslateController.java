@@ -44,4 +44,9 @@ public class TranslateController {
         translateService.deleteTranslation(id);
     }
 
+
+    @GetMapping("/test")
+    public String getTestMessage(){
+        return "Hello, you've done it!";
+    }
 }

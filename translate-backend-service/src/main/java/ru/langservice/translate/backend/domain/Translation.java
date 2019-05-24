@@ -12,8 +12,7 @@ import java.time.LocalDateTime;
 @Entity
 @Data
 @NoArgsConstructor
-//@EqualsAndHashCode(of = {"id","user"})
-@EqualsAndHashCode(of = {"id"})
+@EqualsAndHashCode(of = {"id","user"})
 public class Translation {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -30,23 +29,20 @@ public class Translation {
     @Length(max = 2048, message = "Message too long")
     private String resultText;
 
+    @NotBlank(message = "Please fill the timestamp")
     private LocalDateTime dateTime;
 
-//    @ManyToOne(fetch = FetchType.EAGER)
-//    @JoinColumn(name = "user_id")
-//    private User user;
-//
-//    public Translation(String text, String lang, String resultText, User user) {
-//        this.origText = text;
-//        this.lang = lang;
-//        this.resultText = resultText;
-//        this.user = user;
-//    }
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    public Translation(String text, String lang, String result, LocalDateTime dateTime) {
+    public Translation(String text, String lang, String resultText, LocalDateTime dateTime, User user) {
         this.origText = text;
         this.lang = lang;
-        this.resultText = result;
+        this.resultText = resultText;
         this.dateTime = dateTime;
+        this.user = user;
     }
+
+
 }
