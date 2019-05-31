@@ -9,6 +9,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import sun.security.util.SecurityConstants;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -52,6 +53,13 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .claim("roles", roles)
                 .compact();
 
-        response.addHeader("Authorization", "Bearer " + token);
+//        response.addHeader("Authorization", "Bearer " + token);
+
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(
+                "{\"" + "Authorization" + "\":\"" + "Bearer " + token + "\"}"
+        );
+
     }
 }
