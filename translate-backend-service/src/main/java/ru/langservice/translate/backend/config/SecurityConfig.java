@@ -7,8 +7,10 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import ru.langservice.translate.backend.security.JwtAuthenticationFilter;
+import ru.langservice.translate.backend.security.JwtAuthorizationFilter;
 import ru.langservice.translate.backend.service.UserService;
 
 @Configuration
@@ -26,25 +28,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                     .csrf()
                     .disable()
-
                     .authorizeRequests()
-//                    .antMatchers("/", "/registration", "/css/**").permitAll()
+                    .antMatchers( "/registration").permitAll()
                     .anyRequest().authenticated()
-
                 .and()
                     .addFilter(new JwtAuthenticationFilter(authenticationManager()))
-
+                    .addFilter(new JwtAuthorizationFilter(authenticationManager()))
+//                    .sessionManagement()
+//                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 //                .and()
-//                    .formLogin()
-//                    .loginPage("/login")
-//                    .permitAll()
-//                    .failureUrl("/login?error=true")
-//                .and()
-//                    .rememberMe()
-
                     .logout()
                     .permitAll()
         ;
+
     }
 
     @Override

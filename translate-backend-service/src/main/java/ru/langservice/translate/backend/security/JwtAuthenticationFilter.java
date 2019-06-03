@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     //TODO
-    private String JWT_SECRET = "x/A?D(G+KbPdSgVkYp3s6v9y$B&E)H@McQfThWmZq4t7w!z%C*F-JaNdRgUkXn2r";
+    public static String JWT_SECRET = "x/A?D(G+KbPdSgVkYp3s6v9y$B&E)H@McQfThWmZq4t7w!z%C*F-JaNdRgUkXn2r";
 
     public JwtAuthenticationFilter(AuthenticationManager authenticationManager){
         this.setAuthenticationManager(authenticationManager);

@@ -23,6 +23,10 @@ public class TranslateService {
         return (List<Translation>) translateRepository.findAll();
     }
 
+    public List<Translation> getTranslations(Long userId) {
+        return translateRepository.findByUserId(userId);
+    }
+
     public Translation saveTranslation(Translation data) {
         return translateRepository.save(data);
     }
