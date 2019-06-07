@@ -25,14 +25,8 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
         super(authenticationManager);
     }
 
-    public JwtAuthorizationFilter(AuthenticationManager authenticationManager, AuthenticationEntryPoint authenticationEntryPoint) {
-        super(authenticationManager, authenticationEntryPoint);
-    }
-
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
-//        super.doFilterInternal(request, response, chain);
-
         String header = request.getHeader("Authorization");
         if (StringUtils.isEmpty(header) || !header.startsWith("Bearer ")) {
             chain.doFilter(request, response);

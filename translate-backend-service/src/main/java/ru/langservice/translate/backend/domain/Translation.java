@@ -29,7 +29,6 @@ public class Translation {
     @Length(max = 2048, message = "Message too long")
     private String resultText;
 
-    @NotBlank(message = "Please fill the timestamp")
     private LocalDateTime dateTime;
 
     @ManyToOne(fetch = FetchType.EAGER)

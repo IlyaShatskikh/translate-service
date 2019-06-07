@@ -1,15 +1,12 @@
 package ru.langservice.translate.backend.security;
 
-import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import sun.security.util.SecurityConstants;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -34,9 +31,9 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
-        UserPrincipals user = (UserPrincipals) authResult.getPrincipal();
+        UserPrincipals userPrincipals = (UserPrincipals) authResult.getPrincipal();
 
-        List<String> roles = user.getAuthorities()
+        List<String> roles = userPrincipals.getAuthorities()
                 .stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
@@ -46,11 +43,13 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .setHeaderParam("typ", "JWT")
 
                 .setIssuer("translate-api")
-                .setSubject(user.getUsername())
+                .setSubject(userPrincipals.getUsername())
                 .setAudience("translate-frontend")
                 .setExpiration(Date.from(LocalDateTime.now().plus(20, ChronoUnit.MINUTES).atZone(ZoneId.systemDefault()).toInstant()))
 
                 .claim("roles", roles)
+                .claim("email", userPrincipals.getUser().getEmail())
+
                 .compact();
 
 //        response.addHeader("Authorization", "Bearer " + token);

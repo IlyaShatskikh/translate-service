@@ -16,6 +16,7 @@ import ru.langservice.translate.backend.service.TranslateService;
 import ru.langservice.translate.backend.service.UserService;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -46,7 +47,9 @@ public class TranslateController {
 
         TranslateResult translateResult = translateService.doTranslate(restTemplate, translation.getOrigText(), translation.getLang());
         if (translateResult == null || translateResult.getText() == null || translateResult.getText().isEmpty()){
-            throw new NoTranslationFound();
+//            throw new NoTranslationFound();
+            translateResult = new TranslateResult();
+            translateResult.setText(new ArrayList<>());
         }
         translation.setResultText(String.join("", translateResult.getText()));
         return translateService.saveTranslation(translation);
