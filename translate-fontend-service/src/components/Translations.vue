@@ -39,7 +39,7 @@
     </b-container>
     <b-container>
       <b-alert v-model="showErrorAlert" variant="danger" dismissible v-on:dismissed="cleanError()">
-        <li v-bind:key="error" v-for="error of errors">
+        <li v-bind:key="idx" v-for="(error, idx) of errors">
           {{error.message}}
         </li>
       </b-alert>
@@ -60,9 +60,6 @@ import axios from 'axios';
 
 export default {
   name: 'Translations',
-  components: {
-  },
-  props: [],
   data() {
     return {
       fields: {
@@ -83,6 +80,7 @@ export default {
           sortable: false,
         },
       },
+
       translations: [],
       filter: null,
 
@@ -95,8 +93,6 @@ export default {
       options: [
         { value: 'ru', text: 'Russian' },
         { value: 'en', text: 'English' },
-        // { value: { C: '3PO' }, text: 'This is an option with object value' },
-        // { value: 'd', text: 'This one is disabled', disabled: true }
       ],
 
       textOrig: null,
@@ -106,13 +102,15 @@ export default {
   mounted() {
     this.getAllTranslations();
   },
+
   methods: {
     cleanError() {
       this.errors = [];
     },
+
     getAllTranslations() {
       axios
-        .get('http://localhost:8081/translations')
+        .get('/translations')
         .then((response) => {
           this.translations = response.data;
         })
@@ -121,10 +119,11 @@ export default {
           this.showErrorAlert = true;
         });
     },
+
     deleteTranslation(row) {
       const translation = row.item;
       axios
-        .delete(`http://localhost:8081/translations/${translation.id}`)
+        .delete(`/translations/${translation.id}`)
         .then(() => {
           this.translations.splice(row.index, 1);
         })
@@ -133,13 +132,14 @@ export default {
           this.showErrorAlert = true;
         });
     },
+
     createTranslation() {
       const request = {
         origText: this.textOrig,
         lang: `${this.selectedFrom}-${this.selectedTo}`,
       };
       axios
-        .post('http://localhost:8081/translations/', request)
+        .post('/translations/', request)
         .then(() => {
           this.getAllTranslations();
         })
